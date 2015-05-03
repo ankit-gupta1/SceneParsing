@@ -2,12 +2,10 @@ import os
 import time
 import math
 import datetime
-import cv2
-import numpy
-from samba.dcerpc.auth import user_info
-import theano
 import sys
 
+import numpy
+import theano
 from theano.tensor.nnet import conv
 from theano.tensor.signal import downsample
 from PIL import Image
@@ -16,10 +14,10 @@ from scipy import misc
 from logistic_regression import LogisticRegression
 from hidden_layer import HiddenLayer
 from load_data import generate_color_labels
-from load_data import normalize
 from load_data import load_processed_img_data
 from load_data import interpolate_tensor
 from load_data import get_img_pyramids
+
 
 class CNN_Layer(object):
     def __init__(self, name, W, b, filter_shape):
@@ -359,7 +357,8 @@ def train_CNN_mini_batch(learning_rate,
     )
 
     if use_hidden_layer is True:
-        L2_norm = (layer4.W ** 2).sum() + (layer3.W ** 2).sum() + (layer2.W ** 2).sum() + (layer1.W ** 2).sum() + (layer0.W ** 2).sum()
+        L2_norm = (layer4.W ** 2).sum() + (layer3.W ** 2).sum() + (layer2.W ** 2).sum() + (layer1.W ** 2).sum() + (
+        layer0.W ** 2).sum()
     else:
         L2_norm = (layer4.W ** 2).sum() + (layer2.W ** 2).sum() + (layer1.W ** 2).sum() + (layer0.W ** 2).sum()
 
@@ -409,9 +408,9 @@ def train_CNN_mini_batch(learning_rate,
         )
 
     if use_hidden_layer is True:
-        params =layer4.params + layer3.params + layer2.params + layer1.params + layer0.params
+        params = layer4.params + layer3.params + layer2.params + layer1.params + layer0.params
     else:
-        params =layer4.params + layer2.params + layer1.params + layer0.params
+        params = layer4.params + layer2.params + layer1.params + layer0.params
 
     grads = theano.tensor.grad(cost, params)
 
@@ -753,7 +752,6 @@ def generate_segmented_images_multiscale(model_dir, num, height, width):
 
 
 def generate_segmented_images_original(model_dir):
-
     gray_scale_dir = model_dir + '/grayscale_original/'
     color_scale_dir = model_dir + '/colored_original/'
 
@@ -798,6 +796,7 @@ def generate_segmented_images_original(model_dir):
             blend = Image.blend(image1, image2, 0.3)
             file_name = color_scale_dir + str(fileNumber) + '_label.png'
             blend.save(file_name)
+
 
 if __name__ == '__main__':
     model_dir = train_CNN_mini_batch(learning_rate=0.1,
